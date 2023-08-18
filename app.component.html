@@ -1,0 +1,145 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<div class="container" >
+  <h1>Contents</h1>
+  
+  <a  href="#todo" (click)="istodofn()" >  To-do</a><br>
+  <a  href="#done" (click)="isdonefn()">  Done</a><br>
+  <a  href="#imgdrop" (click)="isimgdropfn()">  Image dropzone</a><br>
+  <a  href="#details" (click)="isdetailfn()"> Details</a>
+</div>
+
+<div *ngIf="istodo || isdone">
+
+<div class="example-container"  >
+  <h1 id="todo">To-do</h1>
+
+  <div
+    cdkDropList
+    #todoList="cdkDropList"
+    [cdkDropListData]="todo"
+    [cdkDropListConnectedTo]="[doneList]"
+    class="example-list"
+    (cdkDropListDropped)="drop($event)">
+    <div class="example-box" *ngFor="let item of todo"  cdkDrag>{{item}}</div>
+  </div>
+</div>
+
+<div class="example-container" >
+  <h1 id="done">Done</h1>
+
+  <div
+    cdkDropList
+    #doneList="cdkDropList"
+    [cdkDropListData]="done"
+    [cdkDropListConnectedTo]="[todoList]"
+    class="example-list"
+    (cdkDropListDropped)="drop($event)">
+    <div class="example-box" *ngFor="let item of done"  cdkDrag >{{item}}</div>
+  </div>
+</div>
+</div>
+
+<div class="container" *ngIf="isimgdrop" >
+<h1 id="imgdrop" >Image dropzone</h1>
+
+<div class="custom-dropzone"  ngx-dropzone [expandable]="true" [accept]="'image/*'" (change)="onSelect($event)" >
+	<ngx-dropzone-label>
+		<div >
+			<h2>click to drop images </h2>
+			<h6>{{imgcount}} images uploaded</h6>
+		</div>
+	</ngx-dropzone-label>
+	
+</div>
+</div >
+
+<br>
+<button type="btn"  class="add-btn" (click)="galleryopen()" >
+	Gallery
+  </button>
+ 
+  <div *ngIf="isgallery" >
+  <ngx-dropzone-image-preview ngProjectAs="ngx-gallery" *ngFor="let f of files" [file]="f"  [removable]="true" (removed)="onRemove(f)" >
+	<ngx-dropzone-label>{{f.type}}</ngx-dropzone-label>
+</ngx-dropzone-image-preview>
+<div *ngIf="isimg" class="alert alert-warning" role="alert">  no image found</div>
+</div>  
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+	 Gallery
+  </button>
+  
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <h5 class="modal-title" id="exampleModalLabel">Gallery</h5>
+		  
+		  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		  </button>
+		  
+		</div>
+		<div>
+			...
+			<mat-grid-list cols="3" rowHeight="3:4">
+				<mat-grid-tile ></mat-grid-tile>
+				<mat-grid-tile></mat-grid-tile>
+				<mat-grid-tile></mat-grid-tile>
+				<mat-grid-tile></mat-grid-tile>
+			  </mat-grid-list>
+		</div>
+		<div class="modal-footer">
+		  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		  <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+		</div>
+	  </div>
+	</div>
+  </div>
+
+
+
+<!--   
+<ngx-image-gallery 
+[images]="images" 
+[conf]="conf"
+(onOpen)="galleryOpened($event)"
+(onClose)="galleryClosed()"
+(onImageClicked)="galleryImageClicked($event)"
+(onImageChange)="galleryImageChanged($event)"
+(onDelete)="deleteImage($event)"
+></ngx-image-gallery> 
+ -->
+
+ <!-- Dependent Dropdown -->
+ 
+ <div class="container" *ngIf="isdetail">
+	<h2 id="details">Details</h2>
+	
+	<div class="card-container">
+		<label>Country</label>
+		<select placeholder="Country" [(ngModel)]="selectedCountry" (change)="changeCountry($event)">
+			<option>--Choose Country--</option>
+			<option *ngFor="let country of Countries">{{country.name}}</option>
+		</select>
+	</div>
+
+	<div class="card-container">
+		<label>State</label>
+		<select placeholder="State" (change)="changeState($event)">
+			<option>--Choose State--</option>
+			<option *ngFor="let state of states">{{state.name}}</option>
+		</select>
+	</div>
+	
+	<div class="card-container">
+		<label>City</label>
+		<select placeholder="City">
+			<option>--Choose City--</option>
+			<option *ngFor="let city of cities">{{city}}</option>
+		</select>
+	</div>
+</div>
